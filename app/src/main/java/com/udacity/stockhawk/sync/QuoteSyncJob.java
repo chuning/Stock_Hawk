@@ -8,9 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.Toast;
 
+import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
+import com.udacity.stockhawk.ui.MainActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,10 +76,15 @@ public final class QuoteSyncJob {
             while (iterator.hasNext()) {
                 String symbol = iterator.next();
 
-
                 Stock stock = quotes.get(symbol);
-                StockQuote quote = stock.getQuote();
+                if (stock.getName() == null) {
+                    PrefUtils.removeStock(context, symbol);
+                    String message = context.getString(R.string.toast_stock_not_exist, symbol);
+                    showToastInUiThread(context, message);
+                    continue;
+                }
 
+                StockQuote quote = stock.getQuote();
                 float price = quote.getPrice().floatValue();
                 float change = quote.getChange().floatValue();
                 float percentChange = quote.getChangeInPercent().floatValue();
@@ -116,6 +126,17 @@ public final class QuoteSyncJob {
         } catch (IOException exception) {
             Timber.e(exception, "Error fetching stock quotes");
         }
+    }
+
+    private static void showToastInUiThread(final Context context, final String message) {
+
+        Handler mainThread = new Handler(Looper.getMainLooper());
+        mainThread.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private static void schedulePeriodic(Context context) {
