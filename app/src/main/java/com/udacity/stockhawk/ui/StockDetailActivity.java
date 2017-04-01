@@ -87,7 +87,7 @@ public class StockDetailActivity extends AppCompatActivity {
         String historyItem = histories[histories.length - 1 - xValue];
         int idx = historyItem.indexOf(",");
         long dateTimeInMills = Long.parseLong(historyItem.substring(0, idx));
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM Y", Locale.getDefault());
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM y", Locale.getDefault());
         Date date = new Date();
         date.setTime(dateTimeInMills);
 
