@@ -11,6 +11,10 @@
 
     <string name="pref_display_mode_absolute_key">absolute</string>
     <string name="pref_display_mode_percentage_key">percentage</string>
+    <string name="pref_display_mode_absolute_key_content_description">display mode is absolute.
+        Double tap to change to percentage. </string>
+    <string name="pref_display_mode_percentage_key_content_description">display mode is percentage.
+        Double tap to change to absolute.</string>
 
     <string name="default_stocks_yahoo">YHOO</string>
     <string name="default_stocks_apple">AAPL</string>
