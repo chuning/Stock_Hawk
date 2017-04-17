@@ -15,6 +15,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.udacity.stockhawk.R;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,13 +64,25 @@ public class StockDetailActivity extends AppCompatActivity {
 
         setChartTextColor(Color.WHITE);
 
-        IAxisValueFormatter formatter = new IAxisValueFormatter() {
+        IAxisValueFormatter xAxisFormatter = new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return getYearDate((int)value);
             }
         };
-        chart.getXAxis().setValueFormatter(formatter);
+
+        final DecimalFormat dollarFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US);
+        IAxisValueFormatter yAxisFormatter = new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return dollarFormat.format(value);
+            }
+        };
+
+        chart.getXAxis().setValueFormatter(xAxisFormatter);
+        chart.getAxisLeft().setValueFormatter(yAxisFormatter);
+        chart.getAxisRight().setEnabled(false);
+        chart.setDescription(null);
     }
 
     private void setChartTextColor(int color) {

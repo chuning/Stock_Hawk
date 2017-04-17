@@ -77,7 +77,8 @@ public final class QuoteSyncJob {
                 String symbol = iterator.next();
 
                 Stock stock = quotes.get(symbol);
-                if (stock.getName() == null) {
+
+                if (stock == null || stock.getName() == null) {
                     PrefUtils.removeStock(context, symbol);
                     String message = context.getString(R.string.toast_stock_not_exist, symbol);
                     showToastInUiThread(context, message);
